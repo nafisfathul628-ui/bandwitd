@@ -305,7 +305,35 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  const url = new URL(req.url, `http://${req.headers.host}`);
+  const url = new URL(req.url, `http://${req.headers.host || 'localhost:3000'}`);
+
+  // API 0: Auth Login Check
+  if (url.pathname === '/api/auth/login' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', () => {
+      try {
+        const { username, password } = JSON.parse(body || '{}');
+        if (username === 'admin' && password === 'admin') {
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({
+            status: 'success',
+            token: 'local_token_' + Date.now(),
+            user: 'admin',
+            role: 'Super Admin NOC',
+            message: 'Login berhasil!'
+          }));
+        } else {
+          res.writeHead(401, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ status: 'error', message: 'Username atau Password salah!' }));
+        }
+      } catch (e) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: e.message }));
+      }
+    });
+    return;
+  }
 
   // API 1: Live Hardware Telemetry (Ping, Suhu, Uptime, Devices Count, Optical Power)
   if (url.pathname === '/api/modem/telemetry') {

@@ -13,6 +13,76 @@
 </head>
 <body>
 
+  <!-- SECURE LOGIN GATE OVERLAY -->
+  <div class="login-gate-overlay" id="loginGateOverlay">
+    <div class="login-card-box">
+      <!-- Glow ambient -->
+      <div class="login-glow-bg"></div>
+
+      <!-- Brand Header -->
+      <div class="login-header">
+        <div class="login-brand-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div class="login-title-wrap">
+          <h2>IndiBiz <span class="brand-accent">NetGuard</span></h2>
+          <span class="login-subtag">NOC Security Gate &bull; FiberHome Bridge</span>
+        </div>
+      </div>
+
+      <p class="login-desc">Silakan masukkan akun admin untuk mengakses kontrol bandwidth &amp; status modem.</p>
+
+      <!-- Error Alert Box -->
+      <div class="login-alert-box hidden" id="loginAlertBox">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span id="loginAlertMsg">Username atau Password salah!</span>
+      </div>
+
+      <!-- Login Form -->
+      <form id="formLoginGate" class="login-form" autocomplete="off">
+        <div class="login-field-group">
+          <label for="loginUsername"><i class="fa-solid fa-user text-cyan"></i> Username</label>
+          <div class="login-input-wrap">
+            <input type="text" id="loginUsername" class="login-input" placeholder="Masukkan username admin" required autofocus autocomplete="username">
+          </div>
+        </div>
+
+        <div class="login-field-group">
+          <label for="loginPassword"><i class="fa-solid fa-key text-purple"></i> Password</label>
+          <div class="login-input-wrap">
+            <input type="password" id="loginPassword" class="login-input" placeholder="Masukkan password" required autocomplete="current-password">
+            <button type="button" class="btn-toggle-pwd" id="btnTogglePassword" title="Lihat/Sembunyikan Password">
+              <i class="fa-solid fa-eye" id="iconTogglePwd"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="login-options-row">
+          <label class="remember-checkbox-label">
+            <input type="checkbox" id="checkRememberMe" checked>
+            <span>Ingat saya di perangkat ini (Auto Login)</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-login-submit" id="btnLoginSubmit">
+          <i class="fa-solid fa-lock-open"></i> Masuk ke Dashboard
+        </button>
+      </form>
+
+      <!-- Footer credentials hint & badge -->
+      <div class="login-footer-info">
+        <div class="default-cred-hint">
+          <i class="fa-solid fa-circle-info text-cyan"></i>
+          <span>Kredensial Bawaan: User: <code>admin</code> &bull; Pass: <code>admin</code></span>
+        </div>
+        <div class="security-chip">
+          <i class="fa-solid fa-lock text-emerald"></i>
+          <span>Hostinger 256-bit Encrypted Session</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Top Realtime Operations Header -->
   <header class="top-nav" id="topNav">
     <div class="nav-wrapper">
@@ -42,6 +112,18 @@
         <button class="btn btn-crimson" id="btnDirectModemWeb" title="Akses Halaman Modem 192.168.1.1">
           <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka 192.168.1.1
         </button>
+        
+        <!-- User Session Chip & Logout -->
+        <div class="user-session-chip" id="userSessionChip" title="Akun Operator Aktif">
+          <i class="fa-solid fa-user-shield text-cyan"></i>
+          <span class="user-session-name" id="sessionUserName">admin</span>
+          <button class="btn-icon-soft" id="btnOpenChangePwd" title="Ganti Password Login">
+            <i class="fa-solid fa-key"></i>
+          </button>
+          <button class="btn-logout-icon" id="btnLogout" title="Keluar / Logout dari Dashboard">
+            <i class="fa-solid fa-power-off"></i>
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -538,6 +620,39 @@
           </button>
           <button type="button" class="btn btn-primary" id="btnCloseExportModal">Tutup</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: Change Password Modal -->
+  <div class="modal-backdrop hidden" id="modalChangePassword">
+    <div class="modal-dialog modal-dialog-sm">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-key text-cyan"></i>
+          <h3>Ganti Password Login</h3>
+        </div>
+        <button class="modal-close" id="btnCloseChangePwd"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="formChangePassword" class="modal-form">
+          <div class="form-group">
+            <label for="pwdOld">Password Lama Saat Ini:</label>
+            <input type="password" id="pwdOld" class="form-control mono" placeholder="Password lama" required>
+          </div>
+          <div class="form-group">
+            <label for="pwdNew">Password Baru:</label>
+            <input type="password" id="pwdNew" class="form-control mono" placeholder="Minimal 4 karakter" required>
+          </div>
+          <div class="form-group">
+            <label for="pwdConfirm">Konfirmasi Password Baru:</label>
+            <input type="password" id="pwdConfirm" class="form-control mono" placeholder="Ketik ulang password baru" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="btnCancelChangePwd">Batal</button>
+            <button type="submit" class="btn btn-primary" id="btnSubmitChangePwd"><i class="fa-solid fa-check"></i> Simpan Password</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

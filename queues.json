@@ -1,7 +1,7 @@
 {
   "E8:65:D4:EB:87:C9": {
-    "maxLimitDown": "70M",
-    "maxLimitUp": "20M",
+    "maxLimitDown": "75M",
+    "maxLimitUp": "75M",
     "enabled": true,
     "comment": "Remote Hostinger Cloud"
   },

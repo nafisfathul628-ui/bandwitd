@@ -27,7 +27,86 @@ if ($action === 'health') {
     exit;
 }
 
-// 2. Delete Hostinger Default Page if exists
+$AUTH_FILE = __DIR__ . '/auth_credentials.json';
+
+function getAuthConfig() {
+    global $AUTH_FILE;
+    if (file_exists($AUTH_FILE)) {
+        $c = json_decode(file_get_contents($AUTH_FILE), true);
+        if (!empty($c['username'])) return $c;
+    }
+    $default = [
+        'username' => 'admin',
+        'password' => 'admin',
+        'role' => 'Super Admin NOC',
+        'updated_at' => time()
+    ];
+    file_put_contents($AUTH_FILE, json_encode($default, JSON_PRETTY_PRINT));
+    return $default;
+}
+
+// 2. Authentication Login Check
+if ($action === 'login') {
+    $inputRaw = file_get_contents('php://input');
+    $req = json_decode($inputRaw, true) ?: [];
+    $user = isset($req['username']) ? trim($req['username']) : '';
+    $pass = isset($req['password']) ? trim($req['password']) : '';
+
+    $cfg = getAuthConfig();
+    if ($user === $cfg['username'] && $pass === $cfg['password']) {
+        $token = hash('sha256', $user . time() . 'indibiz_salt_sec_881');
+        echo json_encode([
+            'status' => 'success',
+            'token' => $token,
+            'user' => $cfg['username'],
+            'role' => $cfg['role'] ?? 'Super Admin NOC',
+            'expires_at' => time() + (86400 * 30),
+            'message' => 'Login berhasil!'
+        ]);
+    } else {
+        http_response_code(401);
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Username atau Password salah! Periksa kembali huruf besar/kecil.'
+        ]);
+    }
+    exit;
+}
+
+// 3. Change Password
+if ($action === 'change_password') {
+    $inputRaw = file_get_contents('php://input');
+    $req = json_decode($inputRaw, true) ?: [];
+    $oldPass = isset($req['old_password']) ? trim($req['old_password']) : '';
+    $newPass = isset($req['new_password']) ? trim($req['new_password']) : '';
+    $newUsername = isset($req['new_username']) ? trim($req['new_username']) : '';
+
+    $cfg = getAuthConfig();
+    if ($oldPass !== $cfg['password']) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Password lama tidak cocok!']);
+        exit;
+    }
+
+    if (strlen($newPass) < 4) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Password baru minimal 4 karakter!']);
+        exit;
+    }
+
+    $cfg['password'] = $newPass;
+    if (!empty($newUsername)) $cfg['username'] = $newUsername;
+    $cfg['updated_at'] = time();
+    file_put_contents($AUTH_FILE, json_encode($cfg, JSON_PRETTY_PRINT));
+
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Password berhasil diperbarui!'
+    ]);
+    exit;
+}
+
+// 4. Delete Hostinger Default Page if exists
 if ($action === 'cleanup_default') {
     if (file_exists(__DIR__ . '/default.php')) {
         unlink(__DIR__ . '/default.php');

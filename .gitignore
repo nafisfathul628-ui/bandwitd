@@ -5,6 +5,7 @@ npm-debug.log*
 # Environment and sensitive credentials
 .env
 hostinger_config.json
+auth_credentials.json
 
 # Local runtime state and caches
 telemetry_cache.json
