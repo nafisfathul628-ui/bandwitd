@@ -16,8 +16,15 @@
   <!-- SECURE LOGIN GATE OVERLAY -->
   <div class="login-gate-overlay" id="loginGateOverlay">
     <div class="login-card-box">
-      <!-- Glow ambient -->
+      <!-- Ambient Cyber Glows -->
       <div class="login-glow-bg"></div>
+      <div class="login-glow-bg-secondary"></div>
+
+      <!-- Gateway Status Pill -->
+      <div class="login-gateway-pill">
+        <span class="status-pulse-dot"></span>
+        <span>Gateway FiberHome HG6145D2 Active</span>
+      </div>
 
       <!-- Brand Header -->
       <div class="login-header">
@@ -30,27 +37,29 @@
         </div>
       </div>
 
-      <p class="login-desc">Silakan masukkan akun admin untuk mengakses kontrol bandwidth &amp; status modem.</p>
+      <p class="login-desc">Masukkan kredensial akun untuk mengakses monitoring bandwidth dan konfigurasi router.</p>
 
       <!-- Error Alert Box -->
       <div class="login-alert-box hidden" id="loginAlertBox">
-        <i class="fa-solid fa-triangle-exclamation"></i>
+        <i class="fa-solid fa-circle-exclamation"></i>
         <span id="loginAlertMsg">Username atau Password salah!</span>
       </div>
 
       <!-- Login Form -->
       <form id="formLoginGate" class="login-form" autocomplete="off">
         <div class="login-field-group">
-          <label for="loginUsername"><i class="fa-solid fa-user text-cyan"></i> Username</label>
+          <label for="loginUsername">Username</label>
           <div class="login-input-wrap">
-            <input type="text" id="loginUsername" class="login-input" placeholder="Masukkan username admin" required autofocus autocomplete="username">
+            <span class="login-input-icon"><i class="fa-solid fa-user"></i></span>
+            <input type="text" id="loginUsername" class="login-input with-icon" placeholder="Masukkan username" required autofocus autocomplete="username">
           </div>
         </div>
 
         <div class="login-field-group">
-          <label for="loginPassword"><i class="fa-solid fa-key text-purple"></i> Password</label>
+          <label for="loginPassword">Password</label>
           <div class="login-input-wrap">
-            <input type="password" id="loginPassword" class="login-input" placeholder="Masukkan password" required autocomplete="current-password">
+            <span class="login-input-icon"><i class="fa-solid fa-lock"></i></span>
+            <input type="password" id="loginPassword" class="login-input with-icon" placeholder="Masukkan password" required autocomplete="current-password">
             <button type="button" class="btn-toggle-pwd" id="btnTogglePassword" title="Lihat/Sembunyikan Password">
               <i class="fa-solid fa-eye" id="iconTogglePwd"></i>
             </button>
@@ -60,24 +69,20 @@
         <div class="login-options-row">
           <label class="remember-checkbox-label">
             <input type="checkbox" id="checkRememberMe" checked>
-            <span>Ingat saya di perangkat ini (Auto Login)</span>
+            <span>Simpan sesi login di perangkat ini</span>
           </label>
         </div>
 
         <button type="submit" class="btn-login-submit" id="btnLoginSubmit">
-          <i class="fa-solid fa-lock-open"></i> Masuk ke Dashboard
+          <i class="fa-solid fa-right-to-bracket"></i> Masuk ke Dashboard
         </button>
       </form>
 
-      <!-- Footer credentials hint & badge -->
+      <!-- Clean Security Footer (No default credential hint) -->
       <div class="login-footer-info">
-        <div class="default-cred-hint">
-          <i class="fa-solid fa-circle-info text-cyan"></i>
-          <span>Kredensial Bawaan: User: <code>admin</code> &bull; Pass: <code>admin</code></span>
-        </div>
         <div class="security-chip">
-          <i class="fa-solid fa-lock text-emerald"></i>
-          <span>Hostinger 256-bit Encrypted Session</span>
+          <i class="fa-solid fa-shield-check text-emerald"></i>
+          <span>Koneksi Terenkripsi &bull; 256-bit Hostinger Session</span>
         </div>
       </div>
     </div>
