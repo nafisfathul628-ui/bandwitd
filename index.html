@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IndiBiz NetGuard &mdash; Realtime FiberHome HG6145D2 &amp; MikroTik Controller</title>
+  <meta name="description" content="Dashboard kontrol alokasi bandwidth realtime model MikroTik Simple Queues dan pemantau FUP 75 Mbps langsung tersambung ke router FiberHome HG6145D2.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Realtime Operations Header -->
+  <header class="top-nav" id="topNav">
+    <div class="nav-wrapper">
+      <div class="brand-zone">
+        <div class="brand-badge">
+          <i class="fa-solid fa-network-wired"></i>
+        </div>
+        <div>
+          <div class="brand-title-row">
+            <h2>IndiBiz <span class="brand-accent">NetGuard</span></h2>
+            <span class="version-tag">FiberHome HG6145D2 Live Bridge</span>
+          </div>
+          <p class="brand-meta">Realtime Router Hardware Telemetry &amp; MikroTik Queues</p>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="header-action-group">
+        <a href="https://netguard.mtsmambaulhikmah.sch.id" target="_blank" class="cloud-status-badge online" id="cloudStatusBadge" title="Akses Online dari Mana Saja via Hostinger Cloud">
+          <span class="cloud-dot pulse"></span>
+          <span>Cloud Live: <strong>Realtime</strong></span>
+          <i class="fa-solid fa-cloud"></i>
+        </a>
+        <button class="btn btn-dark-outline" id="btnSyncNow" title="Ambil Data Terbaru dari Router">
+          <i class="fa-solid fa-arrows-rotate"></i> Sync Router
+        </button>
+        <button class="btn btn-crimson" id="btnDirectModemWeb" title="Akses Halaman Modem 192.168.1.1">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka 192.168.1.1
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-layout">
+
+    <!-- REAL HARDWARE STATUS CARDS (Ping, Suhu, Lama Aktif, Device Terkoneksi) -->
+    <section class="live-hardware-grid" id="sectionHardwareMetrics">
+      
+      <!-- Metric 1: Latensi Ping -->
+      <div class="hw-card" id="hwCardPing">
+        <div class="hw-icon-box icon-cyan">
+          <i class="fa-solid fa-stopwatch"></i>
+        </div>
+        <div class="hw-info">
+          <span class="hw-label">Status Ping Gateway</span>
+          <div class="hw-num-row">
+            <span class="ping-indicator online" id="statusPingDot"></span>
+            <strong class="hw-val mono text-cyan" id="livePingVal">2 ms</strong>
+          </div>
+          <span class="hw-sub" id="livePingSub">192.168.1.1:80 &bull; Respons Kilat</span>
+        </div>
+      </div>
+
+      <!-- Metric 2: Suhu Router (Temperature) -->
+      <div class="hw-card" id="hwCardTemp">
+        <div class="hw-icon-box icon-emerald" id="tempIconBox">
+          <i class="fa-solid fa-temperature-half"></i>
+        </div>
+        <div class="hw-info">
+          <span class="hw-label">Suhu Router (Transceiver)</span>
+          <div class="hw-num-row">
+            <strong class="hw-val mono text-emerald" id="liveTempVal">47.8 °C</strong>
+          </div>
+          <span class="hw-sub" id="liveTempSub">Suhu Normal &bull; GPON Dingin</span>
+        </div>
+      </div>
+
+      <!-- Metric 3: Berapa Lama Aktif (Uptime) -->
+      <div class="hw-card" id="hwCardUptime">
+        <div class="hw-icon-box icon-purple">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <div class="hw-info">
+          <span class="hw-label">Berapa Lama Aktif (Uptime)</span>
+          <div class="hw-num-row">
+            <strong class="hw-val mono" id="liveUptimeVal">1 Hari, 19 Jam</strong>
+          </div>
+          <span class="hw-sub" id="liveUptimeSec">154.845 detik tanpa restart</span>
+        </div>
+      </div>
+
+      <!-- Metric 4: Berapa Device Terkoneksi -->
+      <div class="hw-card" id="hwCardDevices">
+        <div class="hw-icon-box icon-amber">
+          <i class="fa-solid fa-network-wired"></i>
+        </div>
+        <div class="hw-info">
+          <span class="hw-label">Perangkat Terkoneksi</span>
+          <div class="hw-num-row">
+            <strong class="hw-val mono text-amber" id="liveDevicesCount">6 Device</strong>
+          </div>
+          <span class="hw-sub" id="liveDevicesBreakdown">2 LAN &bull; 3 Wi-Fi 2.4G &bull; 1 Wi-Fi 5G</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SECTION 1: Indibiz 75 Mbps FUP Telemetry Card -->
+    <section class="section-card fup-monitor-card" id="cardFupMonitor">
+      <div class="section-header">
+        <div class="header-title-box">
+          <span class="sub-label text-crimson"><i class="fa-solid fa-gauge-simple-high"></i> ANALISIS KUOTA ISP</span>
+          <h3>Fair Usage Policy (FUP) &mdash; Paket Indibiz 75 Mbps</h3>
+        </div>
+        <div class="header-tools">
+          <div class="segmented-control" id="fupTypeSwitch">
+            <button class="segment-btn active" data-type="basic"><i class="fa-solid fa-sliders"></i> Paket Basic (Dengan FUP)</button>
+            <button class="segment-btn" data-type="pro"><i class="fa-solid fa-infinity"></i> Paket Pro (Non-FUP / Unlimited)</button>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btnEditQuota">
+            <i class="fa-solid fa-pen-to-square"></i> Atur Pemakaian (GB)
+          </button>
+        </div>
+      </div>
+
+      <!-- FUP Visual Stage Progress Bar -->
+      <div class="fup-gauge-container">
+        <div class="fup-metrics-summary">
+          <div class="metric-cell">
+            <span class="cell-label">Kecepatan Saat Ini</span>
+            <div class="cell-value-row">
+              <strong class="huge-number text-cyan mono" id="fupCurrentSpeed">75.0</strong>
+              <span class="unit">Mbps</span>
+            </div>
+            <span class="cell-note" id="fupSpeedStatus">Status: Kecepatan Penuh 100%</span>
+          </div>
+
+          <div class="metric-cell">
+            <span class="cell-label">Total Data Terpakai Bulan Ini</span>
+            <div class="cell-value-row">
+              <strong class="huge-number text-main mono" id="fupUsedGb">482.6</strong>
+              <span class="unit">GB</span>
+            </div>
+            <span class="cell-note">Dari batas FUP 1: <strong>1.500 GB</strong></span>
+          </div>
+
+          <div class="metric-cell">
+            <span class="cell-label">Sisa Menuju FUP 1</span>
+            <div class="cell-value-row">
+              <strong class="huge-number text-emerald mono" id="fupRemainingGb">1.017,4</strong>
+              <span class="unit">GB</span>
+            </div>
+            <span class="cell-note">Kecepatan turun ke 37.5 Mbps jika batas tercapai</span>
+          </div>
+
+          <div class="metric-cell">
+            <span class="cell-label">Rekomendasi Anggaran Harian</span>
+            <div class="cell-value-row">
+              <strong class="huge-number text-amber mono" id="fupDailyAllowance">50.8</strong>
+              <span class="unit">GB/hari</span>
+            </div>
+            <span class="cell-note" id="fupDaysRemainingText">Sisa hari sebelum reset tanggal 1</span>
+          </div>
+        </div>
+
+        <!-- Multi-tier FUP Threshold Visual Bar -->
+        <div class="multi-tier-bar-box">
+          <div class="bar-legend-row">
+            <span class="legend-item"><i class="legend-dot dot-green"></i> <strong>Zona 1 (0 - 1.500 GB)</strong>: Full Speed 75 Mbps</span>
+            <span class="legend-item"><i class="legend-dot dot-amber"></i> <strong>Zona 2 (1.500 - 2.000 GB)</strong>: FUP 1 &rarr; Turun ke 37.5 Mbps (50%)</span>
+            <span class="legend-item"><i class="legend-dot dot-red"></i> <strong>Zona 3 (&gt; 2.000 GB)</strong>: FUP 2 &rarr; Turun ke 15.0 Mbps (20%)</span>
+          </div>
+
+          <div class="fup-multi-progress-track">
+            <div class="zone-segment zone-green" style="width: 75%;">
+              <span class="zone-label">FUP 1 (1.500 GB)</span>
+            </div>
+            <div class="zone-segment zone-amber" style="width: 25%;">
+              <span class="zone-label">FUP 2 (2.000 GB)</span>
+            </div>
+            <div class="fup-current-indicator" id="fupMarker" style="left: 24.1%;">
+              <div class="marker-pin"></div>
+              <div class="marker-bubble mono" id="markerBubbleText">482.6 GB (32.1%)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed FUP Breakdown Technical Table -->
+        <div class="fup-technical-table-wrap">
+          <table class="table-compact">
+            <thead>
+              <tr>
+                <th>Tingkatan FUP Indibiz 75 Mbps</th>
+                <th>Ambang Batas Kuota</th>
+                <th>Kecepatan Download</th>
+                <th>Kecepatan Upload</th>
+                <th>Dampak Penggunaan di Rumah</th>
+                <th>Status Saat Ini</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-highlight-active" id="tierRowNormal">
+                <td><strong>Level 0 (Kecepatan Penuh)</strong></td>
+                <td><span class="mono">0 &ndash; 1.500 GB (1.5 TB)</span></td>
+                <td><strong class="mono text-cyan">75 Mbps</strong> (100%)</td>
+                <td><span class="mono">25 Mbps</span></td>
+                <td>Streaming 4K, meeting Zoom, download game, 10+ perangkat bebas tanpa hambatan.</td>
+                <td><span class="badge-status-chip chip-active"><i class="fa-solid fa-check"></i> AKTIF</span></td>
+              </tr>
+              <tr id="tierRowFup1">
+                <td><strong>Level 1 (FUP Tahap 1)</strong></td>
+                <td><span class="mono">1.500 &ndash; 2.000 GB</span></td>
+                <td><strong class="mono text-amber">37.5 Mbps</strong> (50%)</td>
+                <td><span class="mono">12.5 Mbps</span></td>
+                <td>Masih sangat aman untuk streaming YouTube Full HD 1080p dan meeting kerja lancar.</td>
+                <td><span class="badge-status-chip chip-waiting">Belum Tercapai</span></td>
+              </tr>
+              <tr id="tierRowFup2">
+                <td><strong>Level 2 (FUP Tahap 2)</strong></td>
+                <td><span class="mono">&gt; 2.000 GB (2.0 TB)</span></td>
+                <td><strong class="mono text-crimson">15.0 Mbps</strong> (20%)</td>
+                <td><span class="mono">5.0 Mbps</span></td>
+                <td>Masih bisa untuk browsing dan video 720p, namun download file besar akan terasa lambat.</td>
+                <td><span class="badge-status-chip chip-waiting">Belum Tercapai</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: Realtime MikroTik Simple Queues (Populated from Real Connected Devices) -->
+    <section class="section-card queues-manager-card" id="cardMikrotikQueues">
+      <div class="section-header">
+        <div class="header-title-box">
+          <div class="title-with-badge">
+            <span class="sub-label text-cyan"><i class="fa-solid fa-bars-staggered"></i> MIKROTIK QUEUES ENGINE (REALTIME HARDWARE)</span>
+            <h3>Simple Queues &mdash; Pengatur Alokasi Bandwidth Perangkat Realtime</h3>
+          </div>
+          <p class="section-subtext">Daftar di bawah ditarik langsung secara realtime dari router FiberHome HG6145D2. Anda dapat mengatur limit Mbps per IP/MAC.</p>
+        </div>
+
+        <!-- Winbox Tool Actions -->
+        <div class="winbox-toolbar">
+          <button class="winbox-btn btn-add" id="btnWinboxAddQueue" title="Tambah Aturan Queue Manual">
+            <i class="fa-solid fa-plus"></i> Add
+          </button>
+          <button class="winbox-btn btn-enable" id="btnWinboxEnableQueue" title="Aktifkan Queue">
+            <i class="fa-solid fa-check"></i> Enable
+          </button>
+          <button class="winbox-btn btn-disable" id="btnWinboxDisableQueue" title="Nonaktifkan Queue (Jeda)">
+            <i class="fa-solid fa-xmark"></i> Disable
+          </button>
+          <button class="winbox-btn" id="btnWinboxResetCounters" title="Reset Hitungan Bytes">
+            <i class="fa-solid fa-chart-column"></i> Reset Counters
+          </button>
+          <button class="winbox-btn btn-highlight" id="btnSyncToFiberhome" title="Sinkronkan Aturan ke Router FiberHome">
+            <i class="fa-solid fa-bolt"></i> Push ke FiberHome
+          </button>
+          <button class="winbox-btn" id="btnExportMikrotikScript" title="Salin Script CLI RouterOS">
+            <i class="fa-solid fa-terminal"></i> Export Script
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Bandwidth Throughput Meter Bar -->
+      <div class="live-traffic-gauge-row">
+        <div class="traffic-stat-chip">
+          <span class="ts-title"><i class="fa-solid fa-arrow-down text-cyan"></i> Total Download (Rx)</span>
+          <strong class="mono text-cyan" id="liveTotalRxSpeed">16.4 Mbps</strong>
+          <span class="ts-sub">Kapasitas: 75 Mbps</span>
+        </div>
+        <div class="traffic-meter-track">
+          <div class="traffic-meter-fill fill-rx" id="liveMeterRx" style="width: 22%;"></div>
+        </div>
+
+        <div class="traffic-stat-chip">
+          <span class="ts-title"><i class="fa-solid fa-arrow-up text-purple"></i> Total Upload (Tx)</span>
+          <strong class="mono text-purple" id="liveTotalTxSpeed">4.2 Mbps</strong>
+          <span class="ts-sub">Kapasitas: 25 Mbps</span>
+        </div>
+        <div class="traffic-meter-track">
+          <div class="traffic-meter-fill fill-tx" id="liveMeterTx" style="width: 17%;"></div>
+        </div>
+      </div>
+
+      <!-- MikroTik Winbox Table Layout -->
+      <div class="winbox-table-viewport">
+        <table class="winbox-table" id="winboxQueuesTable">
+          <thead>
+            <tr>
+              <th width="35" class="th-center"><input type="checkbox" id="checkSelectAllQueues"></th>
+              <th width="30" class="th-center">#</th>
+              <th width="40" class="th-center">Flag</th>
+              <th>Nama Perangkat / Host</th>
+              <th>Target IP / Subnet</th>
+              <th>Media Koneksi</th>
+              <th>Max Limit (Up / Down)</th>
+              <th>Burst Limit</th>
+              <th width="70" class="th-center">Priority</th>
+              <th width="150">Realtime Throughput</th>
+              <th>Total Transfer Data</th>
+              <th>Comment</th>
+              <th width="90" class="th-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="winboxQueuesTableBody">
+            <!-- Injected via JavaScript from server.js live router polling -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table Summary Footer -->
+      <div class="winbox-footer-summary">
+        <div class="summary-left">
+          <span>Items: <strong class="mono" id="queueTotalItems">6</strong></span>
+          <span>Active: <strong class="mono text-emerald" id="queueActiveItems">6</strong></span>
+          <span>Disabled: <strong class="mono text-crimson" id="queueDisabledItems">0</strong></span>
+        </div>
+        <div class="summary-right">
+          <span class="text-muted"><i class="fa-solid fa-circle-info"></i> Data diambil langsung dari tabel DHCP &amp; WLAN router FiberHome HG6145D2.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: Live FiberHome HG6145D2 Router Integration Console -->
+    <section class="section-card modem-integration-card" id="cardModemIntegration">
+      <div class="section-header">
+        <div class="header-title-box">
+          <span class="sub-label text-emerald"><i class="fa-solid fa-microchip"></i> DETAIL HARDWARE ASLI</span>
+          <h3>FiberHome HG6145D2 Live Gateway Telemetry</h3>
+        </div>
+        <div class="header-tools">
+          <button class="btn btn-secondary btn-sm" id="btnToggleModemConsole">
+            <i class="fa-solid fa-code"></i> Tampilkan Console Log
+          </button>
+        </div>
+      </div>
+
+      <div class="modem-bridge-grid">
+        <div class="bridge-info-box">
+          <h4>Parameter Hardware Router Saat Ini</h4>
+          <ul class="modem-param-list">
+            <li>
+              <span>Model &amp; Serial:</span>
+              <strong class="mono" id="modemModelSerial">HG6145D2 &bull; FHTTC019031D</strong>
+            </li>
+            <li>
+              <span>Firmware Version:</span>
+              <strong class="mono" id="modemFirmware">RP4437</strong>
+            </li>
+            <li>
+              <span>Daya Optik RX / TX:</span>
+              <strong class="mono text-emerald" id="opticalPowersDisplay">-18.42 dBm / 2.75 dBm</strong>
+            </li>
+            <li>
+              <span>Tegangan Suplai:</span>
+              <strong class="mono" id="modemVoltage">3.24 V</strong>
+            </li>
+            <li>
+              <span>Beban CPU &amp; RAM:</span>
+              <strong class="mono" id="cpuMemDisplay">CPU: 13% | Free RAM: 361 MB</strong>
+            </li>
+            <li>
+              <span>Link WAN ISP:</span>
+              <strong class="text-emerald">Telkom Indibiz B2B 75 Mbps (Active)</strong>
+            </li>
+          </ul>
+
+          <div class="bridge-action-row">
+            <a href="http://192.168.1.1" target="_blank" class="btn btn-primary btn-sm">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Web Admin Modem 192.168.1.1
+            </a>
+            <button class="btn btn-secondary btn-sm" id="btnCopyFiberhomeCar">
+              <i class="fa-solid fa-copy"></i> Salin Aturan CAR / QoS FiberHome
+            </button>
+          </div>
+        </div>
+
+        <div class="bridge-console-box">
+          <div class="console-head">
+            <span class="mono"><i class="fa-solid fa-terminal"></i> Terminal Live Log Modem &amp; Local Bridge</span>
+            <span class="mono text-emerald" id="consoleTime">ONLINE &bull; 192.168.1.1</span>
+          </div>
+          <div class="console-output mono" id="liveConsoleLog">
+[LIVE] Terhubung ke FiberHome HG6145D2 (192.168.1.1) dengan user:user1234.
+[LIVE] Membaca data base_info: Suhu transceiver 47.8 °C, Uptime 154845s, Optical Rx -18.42 dBm.
+[LIVE] Membaca data lan_status: 6 perangkat aktif terdeteksi di jaringan rumah!
+[LIVE] Simple Queues otomatis disinkronkan dengan IP dan hostname perangkat riil.
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL 1: Edit MikroTik Simple Queue Modal -->
+  <div class="modal-backdrop hidden" id="modalWinboxQueue">
+    <div class="modal-dialog modal-wide">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-network-wired text-cyan"></i>
+          <h3 id="modalQueueTitle">Winbox &mdash; Edit Simple Queue</h3>
+        </div>
+        <button class="modal-close" id="btnCloseQueueModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="formWinboxQueue">
+          <input type="hidden" id="qEditId" value="">
+          <input type="hidden" id="qMac" value="">
+
+          <div class="form-row">
+            <div class="form-group col-half">
+              <label for="qName">Nama Perangkat:</label>
+              <input type="text" id="qName" class="form-control mono" placeholder="queue_Laptop" required>
+            </div>
+            <div class="form-group col-half">
+              <label for="qTarget">Target IP Address:</label>
+              <input type="text" id="qTarget" class="form-control mono" placeholder="192.168.1.21/32" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-half">
+              <label for="qMaxDown">Max Limit Download (Mbps):</label>
+              <div class="input-with-unit">
+                <input type="number" id="qMaxDown" class="form-control mono" min="1" max="75" value="15" required>
+                <span class="unit-tag">Mbps</span>
+              </div>
+              <small class="form-help">Batas kecepatan download (Max paket: 75 Mbps).</small>
+            </div>
+            <div class="form-group col-half">
+              <label for="qMaxUp">Max Limit Upload (Mbps):</label>
+              <div class="input-with-unit">
+                <input type="number" id="qMaxUp" class="form-control mono" min="1" max="25" value="5" required>
+                <span class="unit-tag">Mbps</span>
+              </div>
+              <small class="form-help">Batas kecepatan upload (Max: 25 Mbps).</small>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-half">
+              <label for="qBurstDown">Burst Limit Download (Mbps):</label>
+              <div class="input-with-unit">
+                <input type="number" id="qBurstDown" class="form-control mono" min="1" max="90" value="25">
+                <span class="unit-tag">Mbps</span>
+              </div>
+              <small class="form-help">Lonjakan kecepatan singkat saat buka web baru.</small>
+            </div>
+            <div class="form-group col-half">
+              <label for="qPriority">Priority (1 = Tertinggi, 8 = Terendah):</label>
+              <select id="qPriority" class="form-control mono">
+                <option value="1">1 (VIP / Meeting Kerja)</option>
+                <option value="2">2 (High)</option>
+                <option value="3">3 (Streaming TV)</option>
+                <option value="4">4 (Normal+)</option>
+                <option value="5" selected>5 (Normal / HP Anak)</option>
+                <option value="6">6 (Low)</option>
+                <option value="7">7 (Very Low)</option>
+                <option value="8">8 (Lowest / Tamu)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="qComment">Comment / Deskripsi:</label>
+            <input type="text" id="qComment" class="form-control" placeholder="Contoh: Laptop Ayah Zoom">
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="btnCancelQueueModal">Batal</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Simpan Batas Kecepatan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Edit Pemakaian Kuota Manual -->
+  <div class="modal-backdrop hidden" id="modalEditQuota">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-pen-to-square text-crimson"></i>
+          <h3>Perbarui Angka Kuota Terpakai</h3>
+        </div>
+        <button class="modal-close" id="btnCloseEditQuota"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="formEditQuota">
+          <div class="form-group">
+            <label for="inputUsedQuotaGb">Pemakaian Kuota Terpakai Saat Ini (GB):</label>
+            <input type="number" step="0.1" min="0" max="5000" id="inputUsedQuotaGb" class="form-control mono" value="482.6" required>
+            <small class="form-help">Periksa di aplikasi MyIndiBiz / SMS Telkom, lalu masukkan angkanya di sini untuk sinkronisasi FUP.</small>
+          </div>
+          <div class="form-group">
+            <label for="inputResetDay">Tanggal Reset Bulanan:</label>
+            <input type="number" min="1" max="31" id="inputResetDay" class="form-control mono" value="1" required>
+            <small class="form-help">Indibiz mereset kuota setiap tanggal 1 awal bulan pukul 00:00 WIB.</small>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="btnCancelEditQuota">Batal</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Script Export Modal (RouterOS & FiberHome) -->
+  <div class="modal-backdrop hidden" id="modalScriptExport">
+    <div class="modal-dialog modal-wide">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-terminal text-cyan"></i>
+          <h3>Export Script CLI &mdash; RouterOS &amp; FiberHome CAR</h3>
+        </div>
+        <button class="modal-close" id="btnCloseScriptExport"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted text-sm">Salin perintah di bawah ini untuk diterapkan langsung ke Terminal MikroTik atau ke tabel QoS FiberHome:</p>
+        
+        <div class="script-output-box">
+          <textarea id="scriptExportText" class="mono form-control" rows="12" readonly></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btnCopyExportText">
+            <i class="fa-solid fa-copy"></i> Salin ke Clipboard
+          </button>
+          <button type="button" class="btn btn-primary" id="btnCloseExportModal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Footer -->
+  <footer class="system-footer">
+    <div class="footer-wrap">
+      <div class="footer-left">
+        <span>IndiBiz NetGuard &bull; RouterOS Simple Queues &amp; FiberHome HG6145D2 Bridge Controller</span>
+      </div>
+      <div class="footer-right">
+        <span class="mono"><i class="fa-solid fa-shield-halved"></i> Hostinger &amp; Local Node.js Gateway &bull; 192.168.1.1 (user/user1234)</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

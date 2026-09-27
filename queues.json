@@ -1,0 +1,16 @@
+{
+  "E8:65:D4:EB:87:C9": {
+    "maxLimitDown": "70M",
+    "maxLimitUp": "20M",
+    "enabled": true,
+    "comment": "Remote Hostinger Cloud"
+  },
+  "80:38:FB:CC:7F:C2": {
+    "maxLimitDown": "15M",
+    "maxLimitUp": "5M",
+    "burstLimitDown": "22.5M",
+    "priority": "5",
+    "enabled": true,
+    "comment": "andanyasaya (Wi-Fi 2.4 GHz)"
+  }
+}

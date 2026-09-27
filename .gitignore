@@ -1,0 +1,17 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+
+# Environment and sensitive credentials
+.env
+hostinger_config.json
+
+# Local runtime state and caches
+telemetry_cache.json
+commands_queue.json
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
