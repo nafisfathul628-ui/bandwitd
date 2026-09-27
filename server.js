@@ -247,7 +247,7 @@ function getCombinedSimpleQueues() {
     const custom = deviceQueueLimits[dev.mac] || deviceQueueLimits[dev.ip] || {};
 
     const maxLimitDown = custom.maxLimitDown || (idx === 0 ? "40M" : idx === 1 ? "25M" : "15M");
-    const maxLimitUp = custom.maxLimitUp || (idx === 0 ? "15M" : "5M");
+    const maxLimitUp = custom.maxLimitUp || (idx === 0 ? "40M" : idx === 1 ? "25M" : "15M");
     const burstDown = custom.burstLimitDown || (parseInt(maxLimitDown) * 1.5 + "M");
     const priority = custom.priority || (idx === 0 ? "1" : "5");
     const enabled = custom.enabled !== undefined ? custom.enabled : true;

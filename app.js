@@ -17,15 +17,15 @@ const SAVE_QUEUE_URL = IS_HOSTINGER ? `${window.location.origin}/api.php?action=
 const SYNC_URL = IS_HOSTINGER ? `${window.location.origin}/api.php?action=telemetry` : 'http://localhost:3000/api/modem/sync';
 
 const FUP_CONFIG = {
-  planName: "Indibiz Internet Bisnis 75 Mbps",
+  planName: "Indibiz Internet Bisnis 75 Mbps (Simetris 1:1)",
   baseSpeedDown: 75.0,
-  baseSpeedUp: 25.0,
+  baseSpeedUp: 75.0,         // Simetris 1:1
   fup1ThresholdGb: 1500.0,   // FUP Tahap 1: 1.500 GB
   fup1SpeedDown: 37.5,       // Turun 50%
-  fup1SpeedUp: 12.5,
+  fup1SpeedUp: 37.5,         // Turun 50% (Simetris 1:1)
   fup2ThresholdGb: 2000.0,   // FUP Tahap 2: 2.000 GB
   fup2SpeedDown: 15.0,       // Turun ke 20%
-  fup2SpeedUp: 5.0,
+  fup2SpeedUp: 15.0,         // Turun ke 20% (Simetris 1:1)
   resetDay: 1,               // Tanggal 1 setiap bulan
   currentUsedGb: 482.6,      // Default used
   isProNonFup: false
@@ -259,13 +259,13 @@ function updateThroughputSummary() {
   });
 
   totalRx = Math.min(75, totalRx);
-  totalTx = Math.min(25, totalTx);
+  totalTx = Math.min(75, totalTx);
 
   if (rxSpeedEl) rxSpeedEl.textContent = `${totalRx.toFixed(1)} Mbps`;
   if (txSpeedEl) txSpeedEl.textContent = `${totalTx.toFixed(1)} Mbps`;
 
   if (rxMeter) rxMeter.style.width = `${Math.min(100, Math.round((totalRx / 75) * 100))}%`;
-  if (txMeter) txMeter.style.width = `${Math.min(100, Math.round((totalTx / 25) * 100))}%`;
+  if (txMeter) txMeter.style.width = `${Math.min(100, Math.round((totalTx / 75) * 100))}%`;
 }
 
 function toggleQueueStatus(id, state) {
@@ -540,15 +540,15 @@ function updateFupDisplay() {
   if (!isPro) {
     if (used > FUP_CONFIG.fup2ThresholdGb) {
       currentSpeed = FUP_CONFIG.fup2SpeedDown;
-      speedStatus = "Status: FUP 2 Aktif &mdash; Dibatasi ke 15 Mbps";
+      speedStatus = "Status: FUP 2 Aktif &mdash; Dibatasi ke 15.0 Mbps / 15.0 Mbps (Simetris)";
       tierActive = "fup2";
     } else if (used > FUP_CONFIG.fup1ThresholdGb) {
       currentSpeed = FUP_CONFIG.fup1SpeedDown;
-      speedStatus = "Status: FUP 1 Aktif &mdash; Dibatasi ke 37.5 Mbps";
+      speedStatus = "Status: FUP 1 Aktif &mdash; Dibatasi ke 37.5 Mbps / 37.5 Mbps (Simetris)";
       tierActive = "fup1";
     }
   } else {
-    speedStatus = "Status: Unlimited Non-FUP (Full 75 Mbps Dedicated)";
+    speedStatus = "Status: Unlimited Non-FUP (Full 75 Mbps / 75 Mbps Simetris Dedicated)";
   }
 
   const today = new Date();

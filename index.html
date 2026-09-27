@@ -116,7 +116,7 @@
       <div class="section-header">
         <div class="header-title-box">
           <span class="sub-label text-crimson"><i class="fa-solid fa-gauge-simple-high"></i> ANALISIS KUOTA ISP</span>
-          <h3>Fair Usage Policy (FUP) &mdash; Paket Indibiz 75 Mbps</h3>
+          <h3>Fair Usage Policy (FUP) &mdash; Paket Indibiz 75 Mbps (Simetris 1:1)</h3>
         </div>
         <div class="header-tools">
           <div class="segmented-control" id="fupTypeSwitch">
@@ -138,7 +138,7 @@
               <strong class="huge-number text-cyan mono" id="fupCurrentSpeed">75.0</strong>
               <span class="unit">Mbps</span>
             </div>
-            <span class="cell-note" id="fupSpeedStatus">Status: Kecepatan Penuh 100%</span>
+            <span class="cell-note" id="fupSpeedStatus">Status: Simetris 1:1 (75M / 75M)</span>
           </div>
 
           <div class="metric-cell">
@@ -156,7 +156,7 @@
               <strong class="huge-number text-emerald mono" id="fupRemainingGb">1.017,4</strong>
               <span class="unit">GB</span>
             </div>
-            <span class="cell-note">Kecepatan turun ke 37.5 Mbps jika batas tercapai</span>
+            <span class="cell-note">Kecepatan turun ke 37.5 Mbps simetris jika batas tercapai</span>
           </div>
 
           <div class="metric-cell">
@@ -172,9 +172,9 @@
         <!-- Multi-tier FUP Threshold Visual Bar -->
         <div class="multi-tier-bar-box">
           <div class="bar-legend-row">
-            <span class="legend-item"><i class="legend-dot dot-green"></i> <strong>Zona 1 (0 - 1.500 GB)</strong>: Full Speed 75 Mbps</span>
-            <span class="legend-item"><i class="legend-dot dot-amber"></i> <strong>Zona 2 (1.500 - 2.000 GB)</strong>: FUP 1 &rarr; Turun ke 37.5 Mbps (50%)</span>
-            <span class="legend-item"><i class="legend-dot dot-red"></i> <strong>Zona 3 (&gt; 2.000 GB)</strong>: FUP 2 &rarr; Turun ke 15.0 Mbps (20%)</span>
+            <span class="legend-item"><i class="legend-dot dot-green"></i> <strong>Zona 1 (0 - 1.500 GB)</strong>: Full Speed 75 Mbps / 75 Mbps (1:1)</span>
+            <span class="legend-item"><i class="legend-dot dot-amber"></i> <strong>Zona 2 (1.500 - 2.000 GB)</strong>: FUP 1 &rarr; Turun ke 37.5 Mbps / 37.5 Mbps (50%)</span>
+            <span class="legend-item"><i class="legend-dot dot-red"></i> <strong>Zona 3 (&gt; 2.000 GB)</strong>: FUP 2 &rarr; Turun ke 15.0 Mbps / 15.0 Mbps (20%)</span>
           </div>
 
           <div class="fup-multi-progress-track">
@@ -206,27 +206,27 @@
             </thead>
             <tbody>
               <tr class="row-highlight-active" id="tierRowNormal">
-                <td><strong>Level 0 (Kecepatan Penuh)</strong></td>
+                <td><strong>Level 0 (Simetris Penuh 1:1)</strong></td>
                 <td><span class="mono">0 &ndash; 1.500 GB (1.5 TB)</span></td>
                 <td><strong class="mono text-cyan">75 Mbps</strong> (100%)</td>
-                <td><span class="mono">25 Mbps</span></td>
-                <td>Streaming 4K, meeting Zoom, download game, 10+ perangkat bebas tanpa hambatan.</td>
+                <td><strong class="mono text-cyan">75 Mbps</strong> (100% Simetris)</td>
+                <td>Upload & download seimbang, live streaming 4K, video call, backup cloud tanpa batas.</td>
                 <td><span class="badge-status-chip chip-active"><i class="fa-solid fa-check"></i> AKTIF</span></td>
               </tr>
               <tr id="tierRowFup1">
                 <td><strong>Level 1 (FUP Tahap 1)</strong></td>
                 <td><span class="mono">1.500 &ndash; 2.000 GB</span></td>
                 <td><strong class="mono text-amber">37.5 Mbps</strong> (50%)</td>
-                <td><span class="mono">12.5 Mbps</span></td>
-                <td>Masih sangat aman untuk streaming YouTube Full HD 1080p dan meeting kerja lancar.</td>
+                <td><strong class="mono text-amber">37.5 Mbps</strong> (50% Simetris)</td>
+                <td>Masih sangat cepat untuk live streaming dan video call meeting berkecepatan tinggi.</td>
                 <td><span class="badge-status-chip chip-waiting">Belum Tercapai</span></td>
               </tr>
               <tr id="tierRowFup2">
                 <td><strong>Level 2 (FUP Tahap 2)</strong></td>
                 <td><span class="mono">&gt; 2.000 GB (2.0 TB)</span></td>
                 <td><strong class="mono text-crimson">15.0 Mbps</strong> (20%)</td>
-                <td><span class="mono">5.0 Mbps</span></td>
-                <td>Masih bisa untuk browsing dan video 720p, namun download file besar akan terasa lambat.</td>
+                <td><strong class="mono text-crimson">15.0 Mbps</strong> (20% Simetris)</td>
+                <td>Masih cukup untuk browsing, sosmed, dan upload file kerja standar.</td>
                 <td><span class="badge-status-chip chip-waiting">Belum Tercapai</span></td>
               </tr>
             </tbody>
@@ -283,7 +283,7 @@
         <div class="traffic-stat-chip">
           <span class="ts-title"><i class="fa-solid fa-arrow-up text-purple"></i> Total Upload (Tx)</span>
           <strong class="mono text-purple" id="liveTotalTxSpeed">4.2 Mbps</strong>
-          <span class="ts-sub">Kapasitas: 25 Mbps</span>
+          <span class="ts-sub">Kapasitas: 75 Mbps (Simetris 1:1)</span>
         </div>
         <div class="traffic-meter-track">
           <div class="traffic-meter-fill fill-tx" id="liveMeterTx" style="width: 17%;"></div>
@@ -439,10 +439,10 @@
             <div class="form-group col-half">
               <label for="qMaxUp">Max Limit Upload (Mbps):</label>
               <div class="input-with-unit">
-                <input type="number" id="qMaxUp" class="form-control mono" min="1" max="25" value="5" required>
+                <input type="number" id="qMaxUp" class="form-control mono" min="1" max="75" value="15" required>
                 <span class="unit-tag">Mbps</span>
               </div>
-              <small class="form-help">Batas kecepatan upload (Max: 25 Mbps).</small>
+              <small class="form-help">Batas kecepatan upload (Max paket simetris: 75 Mbps).</small>
             </div>
           </div>
 

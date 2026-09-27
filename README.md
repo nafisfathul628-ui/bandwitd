@@ -18,20 +18,20 @@ Sistem otomatis menjalankan bridge lokal, menghubungkan ke modem FiberHome `192.
 
 ## 📊 Detail Lengkap Fair Usage Policy (FUP) Indibiz Paket 75 Mbps
 
-Layanan Telkom Indibiz paket **75 Mbps** menerapkan sistem pemakaian wajar (FUP) bertahap sebagai berikut:
+Layanan Telkom Indibiz paket **75 Mbps (Simetris 1:1)** menerapkan sistem pemakaian wajar (FUP) bertahap sebagai berikut:
 
 | Parameter | Spesifikasi / Ketentuan |
 | :--- | :--- |
-| **Kecepatan Awal (Level 0)** | **75 Mbps Download / 25 Mbps Upload** (Rasio 3:1) |
+| **Kecepatan Awal (Level 0)** | **75 Mbps Download / 75 Mbps Upload** (Rasio 1:1 Simetris Bisnis) |
 | **Ambang Batas FUP Tahap 1** | **1.500 GB (1,5 Terabyte)** dalam 1 bulan |
-| **Kecepatan Setelah FUP 1** | Diturunkan ke **50% &rarr; 37.5 Mbps** |
-| **Dampak FUP 1 di Rumah** | Masih sangat cepat dan nyaman untuk 8-10 perangkat bersamaan, streaming YouTube 1080p 60fps tanpa jeda, video meeting Zoom HD tetap lancar. |
+| **Kecepatan Setelah FUP 1** | Diturunkan ke **50% &rarr; 37.5 Mbps Download / 37.5 Mbps Upload** |
+| **Dampak FUP 1 di Rumah** | Sangat cepat dan nyaman untuk live streaming, meeting Zoom HD, gaming, dan upload konten tanpa jeda. |
 | **Ambang Batas FUP Tahap 2** | **2.000 GB (2,0 Terabyte)** dalam 1 bulan |
-| **Kecepatan Setelah FUP 2** | Diturunkan ke **20% &rarr; 15.0 Mbps** |
-| **Dampak FUP 2 di Rumah** | Masih cukup untuk browsing, sosmed, dan streaming video 720p pada 2-3 HP, namun unduhan game atau file besar akan terasa lebih lambat. |
+| **Kecepatan Setelah FUP 2** | Diturunkan ke **20% &rarr; 15.0 Mbps Download / 15.0 Mbps Upload** |
+| **Dampak FUP 2 di Rumah** | Masih lancar untuk browsing, sosmed, dan streaming video 720p pada banyak perangkat sekaligus. |
 | **Siklus Reset Kuota** | Direset otomatis ke **0 GB** pada **tanggal 1 setiap awal bulan pukul 00:00 WIB**. |
 | **Anggaran Harian Aman** | **Maksimal 50 GB per hari** agar kuota 1.500 GB tidak habis sebelum tanggal 1. |
-| **Opsi Paket Pro Non-FUP** | **100% Unlimited tanpa batas kuota**, rasio simetris 1:1 (75 Mbps Download / 75 Mbps Upload murni). |
+| **Opsi Paket Pro Non-FUP** | **100% Unlimited tanpa batas kuota**, rasio simetris 1:1 (75 Mbps Download / 75 Mbps Upload murni dedicated). |
 
 *Catatan: Pada dashboard, Anda dapat mengklik tombol "Paket Pro (Non-FUP)" jika paket Indibiz yang Anda langgani adalah tipe dedicated bisnis tanpa FUP.*
 
